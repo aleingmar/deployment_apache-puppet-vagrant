@@ -1,0 +1,20 @@
+# Esta plantilla de configuración define un host virtual en Apache.
+# Un virtualhost es un método para alojar múltiples dominios (distintos servicios/paginaswebs...) en un solo servidor web y que pueda redireccionar el trafico a cada uno de ellos según la petición del cliente.
+# La variable `@document_root` será reemplazada por el valor especificado en el entorno de Puppet, (/vagrant en este caso creo)
+# indicando el directorio raíz desde el cual Apache servirá los archivos web.
+
+<VirtualHost *:80>  # Configura un host virtual para el puerto 80 (HTTP).
+  ServerAdmin webmaster@localhost  # Define el administrador del servidor; suele usarse para notificaciones de errores.
+  
+  DocumentRoot <%= @document_root %>  # Establece el directorio raíz del sitio web. Puppet reemplaza `@document_root` con un valor específico.
+  
+  <Directory <%= @document_root %>>  # Define las reglas de acceso para el directorio raíz del sitio.
+    Require all granted  # Permite el acceso a todos los usuarios.
+  </Directory>
+  
+  # Define la ubicación del archivo de registro de errores de Apache.
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  
+  # Define la ubicación del archivo de registro de acceso de Apache.
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
